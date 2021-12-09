@@ -76,3 +76,14 @@ def get_bbox_mnist_dataset():
     y_train = (labels[:,0], labels[:,1:])
 
     return (X_train, y_train), (X_test, y_test)
+
+
+def fashion_mnist():
+    (X_train, y_train), (X_test, y_test) = keras.datasets.fashion_mnist.load_data()
+    X = np.concatenate((X_train, X_test))
+    y = np.concatenate((y_train, y_test))
+    X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.98, stratify=y, random_state=42)
+    X_unlaeled = X
+    
+    return X_unlaeled, (X_train, y_train), (X_test, y_test)
+
