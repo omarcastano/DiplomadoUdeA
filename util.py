@@ -4,6 +4,10 @@ import matplotlib.patches as patches
 import numpy as np
 import matplotlib.pyplot as plt
 from tensorflow import keras
+import numpy as np
+from matplotlib import animation, rc
+from IPython.display import HTML
+
 
 BATCH_SIZE = 32
 
