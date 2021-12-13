@@ -87,3 +87,48 @@ def fashion_mnist():
     
     return X_unlaeled, (X_train, y_train), (X_test, y_test)
 
+
+
+def cross_correlation_plot():
+    # Primero configure la figura, el eje y el elemento de la trama que queremos animar
+    fig, ax = plt.subplots(figsize=(13,8) )
+    plt.close()
+
+    y1 = np.array([0.1,0.2,-0.1,4.1,-2,1.5,-0.1])
+    x1=np.arange(1,len(y1)+1)
+    ax.plot(x1,y1+7,'o-')
+
+    ax.set_xlim(( -7, 15))
+    ax.set_ylim((-3, 12))
+    ax.set_yticks([])
+    ax.set_xticks([])
+    line, = ax.plot([], [], 'o-r')
+
+
+    # función de inicialización: traza el fondo de cada cuadro
+    def init():
+        line.set_data([], [])
+        return (line,)
+
+    # función de animación
+    def animate(i):
+        i=i-6
+        y2 = np.array([0.1,4,-2.2,1.6,0.1,0.1,0.2])
+        x=np.arange(1,len(y2)+1)+i
+        line.set_data(x, y2)
+        ax.set_title('cross correlation=%.3f' %(np.correlate(y1,y2,mode='full'))[6+i], fontsize=20)
+        for t in ax.texts:
+            t.set_visible(False)
+
+        for i in range(len(x)):
+            ax.text(x1[i], y1[i]+7, str(y1[i]))
+            ax.text(x[i], y2[i], str(y2[i]))
+
+            
+        return (line,)
+
+    anim = animation.FuncAnimation(fig, animate, init_func=init,
+                             frames=7+6, interval=2000, blit=True)
+
+    rc('animation', html='jshtml')
+    return anim
