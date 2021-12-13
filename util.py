@@ -95,7 +95,7 @@ def fashion_mnist():
 
 def cross_correlation_plot():
     # Primero configure la figura, el eje y el elemento de la trama que queremos animar
-    fig, ax = plt.subplots(figsize=(13,8) )
+    fig, ax = plt.subplots(figsize=(20,8) )
     plt.close()
 
     y1 = np.array([0.1,0.2,-0.1,4.1,-2,1.5,-0.1])
@@ -121,12 +121,13 @@ def cross_correlation_plot():
         x=np.arange(1,len(y2)+1)+i
         line.set_data(x, y2)
         ax.set_title('cross correlation=%.3f' %(np.correlate(y1,y2,mode='full'))[6+i], fontsize=20)
+        ax.set_xlabel(f"{np.correlate(y1,y2,mode='full')[:7+i]}", fontsize=20)
         for t in ax.texts:
             t.set_visible(False)
 
         for i in range(len(x)):
-            ax.text(x1[i], y1[i]+7, str(y1[i]))
-            ax.text(x[i], y2[i], str(y2[i]))
+            ax.text(x1[i], y1[i]+7, str(y1[i]), fontsize=20)
+            ax.text(x[i], y2[i], str(y2[i]), fontsize=20)
 
             
         return (line,)
