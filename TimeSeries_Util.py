@@ -15,19 +15,28 @@ def PlotTimeSeriesValidation(dataset):
 
     
 #funcion que nos ayuda a transofrmar los datos
-def transform_sequence_from_dataframe(dataset, window_size, target_variable ,print_df=False):
+#funcion que nos ayuda a transofrmar los datos
+def transform_sequence_from_dataframe(dataset, window_size_x, window_size_y, target_variable , return_df=False):
     ds = pd.DataFrame(index=range(len(dataset)))
     for cols in dataset.columns.values:
-        print(cols)
-        for i in range(window_size):
+        for i in range(window_size_x):
             ds[f"{cols}(t + {i})"] = dataset[cols].shift(-i).values
 
-    ds[f'{target_variable}(t+{i+1})'] = dataset[target_variable].shift(-i-1).values
-
-    if print_df:
-        print(ds.head())
+    for j in range(i+1, (i+1)+window_size_y):
+        ds[f'{target_variable}(t+{j})'] = dataset[target_variable].shift(-j).values
 
     ds.dropna(inplace=True)
-    X = ds.iloc[:,:-1].to_numpy().reshape((-1, window_size ,len(dataset.columns)))
-    y = ds.iloc[:,-1].to_numpy().reshape((-1, 1))
-    return X, y
+    
+    if window_size_y ==1:
+        X = ds.iloc[:,:-1].to_numpy().reshape((-1, window_size_x ,len(dataset.columns)))
+        y = ds.iloc[:,-1].to_numpy().reshape((-1, 1))
+    else:
+        X = ds.iloc[:,:window_size_x].to_numpy().reshape((-1, window_size_x ,len(dataset.columns)))
+        y = ds.iloc[:, (i+1):(i+1)+window_size_y].to_numpy().reshape((-1, window_size_y, 1))
+
+    if return_df:
+        return X, y, ds
+    else:
+        return X, y
+
+
