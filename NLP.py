@@ -54,7 +54,7 @@ def max_length(tensor):
     return max(len(t) for t in tensor)
     
 
-def evaluate1(sentence,model):
+def evaluate1(sentence,model, max_length_targ, max_length_inp):
     
     attention_plot = np.zeros((max_length_targ, max_length_inp))
     sentence = preprocess_sentence(sentence)
